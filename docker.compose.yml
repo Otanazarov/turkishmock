@@ -1,47 +1,47 @@
 version: '3.9'
 
 services:
-  api:
+  backend:
     image: otanazarov/turk-tili-api:latest
     container_name: turk-tili-api
-    ports:
-      - "4000:4000"
-    env_file:
-      - .env
-    depends_on:
-      - postgres
     restart: always
-
-  user:
-    image: otanazarov/turk-tili-user:latest
-    container_name: turk-tili-user
     ports:
-      - "3000:80"
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
     depends_on:
-      - api
-    restart: always
+      - db
 
   admin:
     image: otanazarov/turk-tili-admin:latest
     container_name: turk-tili-admin
-    ports:
-      - "3001:80"
-    depends_on:
-      - api
     restart: always
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
 
-  postgres:
+  user:
+    image: otanazarov/turk-tili-user:latest
+    container_name: turk-tili-user
+    restart: always
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend
+
+  db:
     image: postgres:15
-    container_name: postgres
+    container_name: turk-tili-db
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: turk_tili_db
     ports:
       - "5432:5432"
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  pg_data:
+  pgdata:
