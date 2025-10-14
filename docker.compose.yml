@@ -31,17 +31,17 @@ services:
       - backend
 
   db:
-    image: postgres:15
+    image: postgres:16
     container_name: turk-tili-db
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: turk_tili_db
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: turk_tili
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  pgdata:
+  postgres_data:
