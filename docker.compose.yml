@@ -5,6 +5,8 @@ services:
     image: otanazarov/turk-tili-api:latest
     container_name: turk-tili-api
     restart: always
+    env_file:
+    - .env
     ports:
       - "3000:3000"
     environment:
